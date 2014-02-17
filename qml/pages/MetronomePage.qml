@@ -37,6 +37,7 @@ Page {
     id: page
     property alias tempo: tempoSlider.value
     property alias beat: beatSlider.value
+    property int type: 2
     property int counter: 0
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
@@ -106,12 +107,28 @@ Page {
 
             model: ListModel {
                 ListElement {
+                    tempo: 60
+                    beat: 4
+                }
+                ListElement {
+                    tempo: 90
+                    beat: 4
+                }
+                ListElement {
                     tempo: 120
                     beat: 4
                 }
                 ListElement {
                     tempo: 180
                     beat: 4
+                }
+                ListElement {
+                    tempo: 45
+                    beat: 3
+                }
+                ListElement {
+                    tempo: 60
+                    beat: 3
                 }
                 ListElement {
                     tempo: 120
@@ -145,8 +162,8 @@ Page {
                 id: tempoSlider
                 value: 120
                 stepSize: 1
-                minimumValue: 30
-                maximumValue: 300
+                minimumValue: 25
+                maximumValue: 250
                 width: parent.width
                 valueText : "\u2669 = " + value
             }
@@ -158,6 +175,19 @@ Page {
                 maximumValue: 9
                 width: parent.width
                 valueText : value + " / 4"
+            }
+            ComboBox {
+                width: page.width
+                label: qsTr("Style")
+                menu: ContextMenu {
+                    MenuItem { text: "Quarter note" }
+                    MenuItem { text: "Eighth rest, Eighth note" }
+                    MenuItem { text: "Eight note" }
+                    MenuItem { text: "Triple" }
+                    MenuItem { text: "Triple with center rest" }
+                    MenuItem { text: "Sixteenth" }
+                }
+                onValueChanged: page.type = currentIndex
             }
 
             Row {
@@ -183,19 +213,73 @@ Page {
         source: Qt.resolvedUrl("../../sound/tick.wav")
     }
     SoundEffect {
+        id: tack
+        source: Qt.resolvedUrl("../../sound/tack.wav")
+    }
+    SoundEffect {
         id: tock
         source: Qt.resolvedUrl("../../sound/tock.wav")
     }
 
     Timer {
         id: timer
-        interval: 60000 /tempo
+        property int divider: dividerForType(type)
+
+        interval: 60000 / tempo / divider
         repeat: true
+
+        function dividerForType(type) {
+            switch (type) {
+            case 0:
+                return 1
+            case 1:
+            case 2:
+                return 2
+            case 3:
+            case 4:
+                return 3
+            case 5:
+                return 4
+            }
+        }
+
         onTriggered: {
-            if (counter % beat) {
-                tick.play()
-            } else {
-                tock.play()
+            switch (type) {
+            case 0:
+                if (counter % beat === 0) {
+                    tick.play()
+                } else {
+                    tack.play()
+                }
+                break;
+            case 1:
+                if (counter % (beat * divider) === 0) {
+                    tick.play()
+                } else if (counter % divider === 1) {
+                    tock.play()
+                }
+                break;
+            case 2:
+            case 3:
+            case 5:
+                if (counter % (beat * divider) === 0) {
+                    tick.play()
+                } else if (counter % (divider) === 0) {
+                    tack.play()
+                } else {
+                    tock.play()
+                }
+                break;
+            case 4:
+                if (counter % (beat * divider) === 0) {
+                    tick.play()
+                } else if (counter % (divider) === 0) {
+                    tack.play()
+                } else if (counter % (divider) === 2) {
+                    tock.play()
+                } else {
+                }
+                break;
             }
             counter++
         }
