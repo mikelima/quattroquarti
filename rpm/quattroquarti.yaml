@@ -3,7 +3,7 @@ Summary: Quattro Quarti Metronome
 Version: 0.1
 Release: 1
 Group: Qt/Qt
-URL: http://example.org/
+URL: https://github.com/mikelima/quattroquarti
 License: GPL v2 or above
 Sources:
 - '%{name}-%{version}.tar.bz2'
@@ -11,16 +11,22 @@ Description: |
   A metronome for sailfish OS
 Configure: none
 Builder: qtc5
+QMakeOptions: VERSION=%{version} TARGET=%{name}
 PkgConfigBR:
-- Qt5Quick
-- Qt5Qml
-- Qt5Core
 - sailfishapp >= 0.0.10
+- Qt5Core
+- Qt5Qml
+- Qt5Quick
 Requires:
 - sailfishsilica-qt5 >= 0.10.9
 Files:
-- '%{_bindir}'
-- '%{_datadir}/%{name}'
-- '%{_datadir}/applications/%{name}.desktop'
 - '%{_datadir}/icons/hicolor/86x86/apps/%{name}.png'
+- '%{_datadir}/applications/%{name}.desktop'
+- '%{_datadir}/%{name}'
+- '%{_bindir}'
+- /usr/bin
+- /usr/share/quattroquarti/sound
+- /usr/share/quattroquarti
+- /usr/share/applications
+- /usr/share/icons/hicolor/86x86/apps
 PkgBR: []
