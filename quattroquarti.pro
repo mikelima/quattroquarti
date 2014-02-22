@@ -13,13 +13,13 @@ SOURCES += src/quattroquarti.cpp
 
 QMLSOURCES += qml/quattroquarti.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml
+    qml/pages/AboutPage.qml \
+    qml/pages/MetronomePage.qml
 
 OTHER_FILES += qml/quattroquarti.qml \
     qml/cover/CoverPage.qml \
+    qml/pages/AboutPage.qml \
     qml/pages/MetronomePage.qml \
-    qml/pages/SecondPage.qml \
-    rpm/quattroquarti.spec \
     rpm/quattroquarti.yaml \
     quattroquarti.desktop
 
