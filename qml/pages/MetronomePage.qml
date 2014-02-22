@@ -51,7 +51,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: qsTr("About Quattro Quarti")
-                onClicked: pageStack.push(Qt.resolvedUrl("SecondPage.qml"))
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
         }
 
